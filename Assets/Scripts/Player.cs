@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 	private Rotator playerRotator;
 
 	public float flapStrength = 2f;
+	public float turnDurationSec = 2f;
 
 	private bool _inputEnabled = true;
 	private bool _isFlapping;
@@ -34,11 +35,11 @@ public class Player : MonoBehaviour
 			{
 				if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
 				{
-					Rotate(-1, 2);
+					Rotate(-1, turnDurationSec);
 				}
 				if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
 				{
-					Rotate(1, 2);
+					Rotate(1, turnDurationSec);
 				}
 			}
 		}

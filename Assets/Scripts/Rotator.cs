@@ -15,10 +15,10 @@ public class Rotator : MonoBehaviour
 
 	public IEnumerator Rotate(int diraction, float _duration = 0)
 	{
-		Debug.Log("Rotation Started!");
 		// If not given a pivot point: use objects own transform as pivot point.
 		if (pivotPoint == null) pivotPoint = transform;
 
+		// Rotation started (for other scripts to check)
 		isRotating = true;
 
 		float _elapsedTime = 0;
@@ -36,34 +36,42 @@ public class Rotator : MonoBehaviour
 		// Update in which direction the object now is in relation to world origin.
 		UpdateWorldDirection(diraction);
 
+		// Clean up rotation:
 		pivotPoint.transform.rotation = targetRotation;
 
+		// Rotation is finnished
 		isRotating = false;
-		Debug.Log("Rotation Ended!");
 	}
 
 	public void UpdateWorldDirection(float angle)
 	{
-		if (worldDiraction == Vector3.forward)
+		worldDiraction = RotateVector3(worldDiraction, angle);
+	}
+
+	public Vector3 RotateVector3(Vector3 input, float angle)
+	{
+		if (input == Vector3.forward)
 		{
-			if (angle > 0) worldDiraction = Vector3.right;
-			else worldDiraction = Vector3.left;
+			if (angle >= 0) input = Vector3.right;
+			else input = Vector3.left;
 		}
-		else if (worldDiraction == Vector3.right)
+		else if (input == Vector3.right)
 		{
-			if (angle > 0) worldDiraction = Vector3.back;
-			else worldDiraction = Vector3.forward;
+			if (angle >= 0) input = Vector3.back;
+			else input = Vector3.forward;
 		}
-		else if (worldDiraction == Vector3.back)
+		else if (input == Vector3.back)
 		{
-			if (angle > 0) worldDiraction = Vector3.left;
-			else worldDiraction = Vector3.right;
+			if (angle >= 0) input = Vector3.left;
+			else input = Vector3.right;
 		}
-		else if (worldDiraction == Vector3.left)
+		else if (input == Vector3.left)
 		{
-			if (angle > 0) worldDiraction = Vector3.forward;
-			else worldDiraction = Vector3.back;
+			if (angle >= 0) input = Vector3.forward;
+			else input = Vector3.back;
 		}
-		else Debug.Log("Current world direction not recognized! worldDirection: " + worldDiraction + "angle: " + angle);
+		else Debug.Log("Current world direction not recognized! worldDirection: " + input + "angle: " + angle);
+
+		return input;
 	}
 }
