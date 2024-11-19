@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
 		_rb = GetComponent<Rigidbody>();
 		cameraRotator = Camera.main.gameObject.GetComponentInParent<Rotator>();
 		playerRotator = GetComponent<Rotator>();
-
 	}
 
 	private void Update()

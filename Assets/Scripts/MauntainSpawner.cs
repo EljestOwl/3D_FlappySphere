@@ -15,8 +15,8 @@ public class MauntainSpawner : MonoBehaviour
 	public float spawnOffsetSegment; // The offset between wall segments.
 	public float spawnOffsetSpawner; // The offset from the spawner.
 
-	[SerializeField] private int _segmentSpawnCountMax;
-	[SerializeField] private int _segmentSpawnCountCurrent;
+	[SerializeField] private int _wallLenghtMax;
+	[SerializeField] private int _wallLenghtCurrent;
 
 	private Vector3 _spawnLocation;
 	private bool _canSpawn;
@@ -54,7 +54,7 @@ public class MauntainSpawner : MonoBehaviour
 			SpawnWallSegment();
 
 			// Check if it is the final object to spawn in the segment:
-			if (_segmentSpawnCountCurrent >= _segmentSpawnCountMax) Rotate();
+			if (_wallLenghtCurrent >= _wallLenghtMax) Rotate();
 		}
 
 		// If it can't spawn, check when the spawner has finished rotating:
@@ -104,12 +104,14 @@ public class MauntainSpawner : MonoBehaviour
 		// Spawn new wall segment:
 		GameObject temp = Instantiate(wallSegment, _spawnLocation, transform.rotation, wallSegmentParent);
 
-		if (!addToList) return;
-
-		// Add it to the list:
-		_wallSegmentsList.Add(temp);
-		// Add 1 to the current segment counter:
-		_segmentSpawnCountCurrent++;
+		// Check if the segment should be added to the list:
+		if (addToList)
+		{
+			// Add it to the list:
+			_wallSegmentsList.Add(temp);
+			// Add 1 to the current segment counter:
+			_wallLenghtCurrent++;
+		}
 	}
 
 	private void SpawnWallEndSegment(int rotationDirection)
@@ -175,7 +177,7 @@ public class MauntainSpawner : MonoBehaviour
 
 	private void ClearAndGenerateNewWall()
 	{
-		_segmentSpawnCountCurrent = 0;
-		_segmentSpawnCountMax = Random.Range(wallMinLength, wallMaxLength);
+		_wallLenghtCurrent = 0;
+		_wallLenghtMax = Random.Range(wallMinLength, wallMaxLength);
 	}
 }

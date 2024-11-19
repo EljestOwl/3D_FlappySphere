@@ -18,6 +18,8 @@ public class Rotator : MonoBehaviour
 		// If not given a pivot point: use objects own transform as pivot point.
 		if (pivotPoint == null) pivotPoint = transform;
 
+		if (diraction == 0) diraction = 1;
+
 		// Rotation started (for other scripts to check)
 		isRotating = true;
 

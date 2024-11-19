@@ -119,6 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 2
-  despawnDistance: 16
+  despawnDistance: 30
   moveDirection: {x: 0, y: 0, z: 0}
   distanceToWorldOrigin: 0
