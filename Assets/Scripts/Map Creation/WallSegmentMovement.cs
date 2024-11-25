@@ -26,6 +26,7 @@ public class WallSegmentMovement : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		/*
 		// Destroy self logic:
 		// Check its own distance to 0,0,0:
 		distanceToWorldOrigin = Vector3.Distance(transform.position, Vector3.zero);
@@ -35,6 +36,7 @@ public class WallSegmentMovement : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+		*/
 	}
 
 	private void MoveObject(float timeDiff)

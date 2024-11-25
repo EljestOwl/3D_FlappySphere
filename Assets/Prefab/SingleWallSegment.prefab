@@ -62,7 +62,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2579942719838129544}
-  - component: {fileID: 2132611395203900514}
   m_Layer: 0
   m_Name: SingleWallSegment
   m_TagString: Untagged
@@ -87,22 +86,6 @@ Transform:
   - {fileID: 5500245370350092069}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2132611395203900514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1744312703053418483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d809d4c392efad4a946c9b9d1cec496, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 2
-  despawnDistance: 30
-  moveDirection: {x: 0, y: 0, z: 0}
-  distanceToWorldOrigin: 0
 --- !u!1 &7831769108909253548
 GameObject:
   m_ObjectHideFlags: 0
