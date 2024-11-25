@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MauntainSpawner : MonoBehaviour
+public class MapBuilder : MonoBehaviour
 {
 	[SerializeField] GameObject wallSegment;
 	[SerializeField] Transform wallSegmentParent;
