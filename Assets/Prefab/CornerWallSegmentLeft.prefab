@@ -43,13 +43,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7579354764151547167}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f57ec2107b528064492f2087e0effcb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallSegment1: {fileID: 5832690457517796289}
-  wallSegment2: {fileID: 9136887536747358801}
+  wallSegmentFurthest: {fileID: 5832690457517796289}
+  wallSegmentClosest: {fileID: 9136887536747358801}
   tolarance: 1
 --- !u!114 &3721462443202995867
 MonoBehaviour:

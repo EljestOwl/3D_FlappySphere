@@ -22,6 +22,7 @@ public class MapBuilderNew : MonoBehaviour
 	private Vector3 _spawnLocation;
 	private Vector3 _mapEndLocation;
 
+	private int rotationDirection;
 	private int _wallLenghtMax;
 	private bool _canSpawn;
 
@@ -32,6 +33,7 @@ public class MapBuilderNew : MonoBehaviour
 
 	private void Start()
 	{
+		_canSpawn = true;
 		InitialMapGeneration();
 	}
 
@@ -39,7 +41,13 @@ public class MapBuilderNew : MonoBehaviour
 	{
 		if (Vector3.Distance(_mapEndLocation, Vector3.zero) < newMapDistance && _canSpawn)
 		{
-			StartCoroutine(GenerateNewMap());
+			//StartCoroutine(GenerateNewMap());
+			// Clear the list from all segments:
+			StartCoroutine(ClearAndDestroyList());
+		}
+		else
+		{
+			_mapEndLocation = _mapSegmentsList[_mapSegmentsList.Count - 1].transform.position;
 		}
 	}
 
@@ -80,21 +88,18 @@ public class MapBuilderNew : MonoBehaviour
 		_mapSegmentsList.Add(temp);
 	}
 
-	private void SpawnWallCornerSegment(int rotationDirection)
+	private void SpawnWallCornerSegment(int rotationDirTemp)
 	{
 		GameObject temp;
 
 		CalculateSpawnLocation();
 
 		// Check direction, true = right:
-		if (rotationDirection >= 0) temp = Instantiate(CornerWallSegmentRight, _spawnLocation, _spawnRotation, wallSegmentParent);
+		if (rotationDirTemp >= 0) temp = Instantiate(CornerWallSegmentRight, _spawnLocation, _spawnRotation, wallSegmentParent);
 		else temp = Instantiate(CornerWallSegmentLeft, _spawnLocation, _spawnRotation, wallSegmentParent);
 
 		// Add segment to the list:
 		_mapSegmentsList.Add(temp);
-
-		// Save the location as the current map end:
-		_mapEndLocation = temp.transform.position;
 	}
 
 	private void GenerateNewMapLength()
@@ -115,8 +120,8 @@ public class MapBuilderNew : MonoBehaviour
 			SpawnWallSegment();
 		}
 
-		// Begin first map generation:
-		StartCoroutine(GenerateNewMap());
+		// Start first map generation:
+		StartCoroutine(ClearAndDestroyList());
 	}
 
 	private IEnumerator GenerateNewMap()
@@ -136,7 +141,8 @@ public class MapBuilderNew : MonoBehaviour
 		}
 
 		// Randomize the rotation direction:
-		int rotationDirection = Random.Range(-1, 1); // left < 0 < right
+		rotationDirection = Random.Range(-1, 1); // left < 0 < right
+		if (rotationDirection == 0) rotationDirection = 1;
 
 		// Spawn conrner segment depending on rotation direction:
 		SpawnWallCornerSegment(rotationDirection);
@@ -145,21 +151,26 @@ public class MapBuilderNew : MonoBehaviour
 		// Rotate spawner to update world direction:
 		StartCoroutine(_rotator.Rotate(rotationDirection));
 
-		// Clear the list from all segments:
-		//StartCoroutine(ClearAndDestroyList());
+		_canSpawn = true;
 	}
 
 	private IEnumerator ClearAndDestroyList()
 	{
+		// Make sure that no new segments can spawn in while the map gets updated:
+		_canSpawn = false;
+
 		float temp;
+
+		Debug.Log("World Direction: " + _rotator.RotateVector3(_rotator.worldDiraction, -rotationDirection));
 
 		// Loop through the list and remove all segments that are behind the player:
 		for (int i = 0; i < _mapSegmentsList.Count - 1; i++)
 		{
-			// Multiply the segments position with the world direction to remove irrelevent
-			// data from the other axis and get its position in relation to world origin:
-			Vector3 distance = Vector3.Scale(_mapSegmentsList[i].transform.position, _rotator.worldDiraction);
+			// Multiply the segments position with the previous world direction to remove irrelevent data
+			// from the other axis and get its position in relation to world origin that behind the player:
+			Vector3 distance = Vector3.Scale(_mapSegmentsList[i].transform.position, _rotator.RotateVector3(_rotator.worldDiraction, -rotationDirection));
 
+			// Check which value of the Vector3 is not 0 -> store the value:
 			// If the value of the remaining axis is negative -> it is behind the player:
 			if (distance.x != 0) temp = distance.x;
 			else temp = distance.z;
@@ -171,12 +182,17 @@ public class MapBuilderNew : MonoBehaviour
 			}
 
 			yield return null;
-
-			Destroy(_mapSegmentsList[0]);
-			_mapSegmentsList.RemoveAt(0);
 		}
 
 		// Remove all destroyed segments form the list:
 		_mapSegmentsList.RemoveAll(x => x == null);
+
+		// Start generating a new map.
+		StartCoroutine(GenerateNewMap());
+	}
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.DrawWireSphere(_mapEndLocation, newMapDistance);
 	}
 }
