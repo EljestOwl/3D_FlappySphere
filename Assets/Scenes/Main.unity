@@ -1041,7 +1041,7 @@ MonoBehaviour:
   wallMinLength: 5
   wallMaxLength: 10
   spawnOffsetSegment: 5
-  newMapDistance: 20
+  newMapDistance: 16
   despawnDistance: 15
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
