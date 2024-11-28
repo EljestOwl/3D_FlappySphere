@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5500245370350092069}
   - component: {fileID: 2384615311168851538}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2579942719838129544}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SingleWallSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5344441486253824251}
   - component: {fileID: 6565670467770064589}
   - component: {fileID: 1668550614465573166}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
