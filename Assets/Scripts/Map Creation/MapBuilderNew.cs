@@ -14,7 +14,7 @@ public class MapBuilderNew : MonoBehaviour
 
 	public int wallMinLength;
 	public int wallMaxLength;
-	public float spawnOffsetSegment; // The offset between wall segments.
+	public float spawnOffsetSegment; // The offset between wall segments: so that there are no seams between segments.
 	public float newMapDistance;
 	public float despawnDistance;
 
@@ -41,8 +41,6 @@ public class MapBuilderNew : MonoBehaviour
 	{
 		if (Vector3.Distance(_mapEndLocation, Vector3.zero) < newMapDistance && _canSpawn)
 		{
-			//StartCoroutine(GenerateNewMap());
-			// Clear the list from all segments:
 			StartCoroutine(ClearAndDestroyList());
 		}
 		else
@@ -160,8 +158,6 @@ public class MapBuilderNew : MonoBehaviour
 		_canSpawn = false;
 
 		float temp;
-
-		Debug.Log("World Direction: " + _rotator.RotateVector3(_rotator.worldDiraction, -rotationDirection));
 
 		// Loop through the list and remove all segments that are behind the player:
 		for (int i = 0; i < _mapSegmentsList.Count - 1; i++)

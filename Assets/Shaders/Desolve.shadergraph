@@ -1973,10 +1973,10 @@
     "m_Guid": {
         "m_GuidSerialized": "e1db7fb0-c89b-48e9-a74f-c7044ba7d9e9"
     },
-    "m_Name": "Size",
+    "m_Name": "CircleSize",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Size",
-    "m_DefaultReferenceName": "_Size",
+    "m_RefNameGeneratedByDisplayName": "CircleSize",
+    "m_DefaultReferenceName": "_CircleSize",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1986,7 +1986,7 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 1.0,
+    "m_Value": 0.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
@@ -2309,7 +2309,7 @@
         "m_Id": "dce2f6c6c0274b92a2797ce52e5b2e39"
     },
     "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 0,
+    "m_SurfaceType": 1,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
@@ -2625,7 +2625,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "85ce255205934f35a61155ea9d36e837",
     "m_Id": 0,
-    "m_DisplayName": "Size",
+    "m_DisplayName": "CircleSize",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

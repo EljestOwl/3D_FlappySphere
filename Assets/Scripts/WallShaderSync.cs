@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,72 +13,82 @@ public class WallShaderSync : MonoBehaviour
 
 	public float lerpTime = 1;
 
-	public Material rightWallMaterial;
-	public Material leftWallMaterial;
-	public Material[] materials;
-	public Material material;
+	public Material[] affectedMaterials;
 	public Camera mainCamera;
 	public LayerMask layerMask;
 	private RaycastHit hit;
-	private bool _isFading;
-	private Dictionary<Material, Coroutine> _runningCoroutines = new Dictionary<Material, Coroutine>();
+	private Vector3 dir;
+	private Ray ray;
+	private Vector2 view;
+
+	private void Start()
+	{
+		// Resett the materials to starting values:
+		foreach (var mat in affectedMaterials)
+		{
+			mat.SetFloat(SizeID, 0);
+			mat.SetFloat(TransparancyID, 0);
+		}
+	}
 
 	private void Update()
 	{
-		Vector3 dir = mainCamera.transform.position - transform.position;
-		Ray ray = new Ray(transform.position, dir.normalized);
+		// Create a ray from the camera to the player:
+		dir = mainCamera.transform.position - transform.position;
+		ray = new Ray(transform.position, dir.normalized);
 
+		// Make a new list to keep track of the materials:
+		Material[] newMaterials = new Material[affectedMaterials.Length];
+
+		// Copy the materials from the first list to the above list:
+		for (int i = 0; i < newMaterials.Length; i++)
+		{
+			newMaterials[i] = affectedMaterials[i];
+		}
+
+		// Raycast to see if there are any walls between the camera and the player:
 		if (Physics.Raycast(ray, out hit, 10f, layerMask))
 		{
-			material = hit.transform.gameObject.GetComponent<Material>();
+			// Get the material of the hit object:
+			Material material = hit.transform.gameObject.GetComponentInParent<MeshRenderer>().sharedMaterial;
 
-			if (materials.Contains(material))
+			// Check if the material is in the list of materials:
+			if (affectedMaterials.Contains(material))
 			{
-				if (_runningCoroutines.ContainsKey(material))
-				{
-					if (_runningCoroutines[material] != null)
-					{
-						StopCoroutine(_runningCoroutines[material]);
-					}
-				}
-				_runningCoroutines.Add(material, StartCoroutine(FadeOut(material)));
+				// Get the index of that material:
+				int index = Array.IndexOf(affectedMaterials, material);
+
+				// Remove that material from the new list, so that we don't try to fade it in:
+				newMaterials[index] = null;
+
+				// Fade out the material:
+				if (affectedMaterials[index].GetFloat(SizeID) < 2f)
+					affectedMaterials[index].SetFloat(SizeID, material.GetFloat(SizeID) + Time.deltaTime);
+				if (affectedMaterials[index].GetFloat(TransparancyID) < 0.5f)
+					affectedMaterials[index].SetFloat(TransparancyID, material.GetFloat(TransparancyID) + Time.deltaTime);
 			}
 		}
-		else
-		{
 
+		foreach (var mat in newMaterials)
+		{
+			// If the current material is null, skip the rest of the current loop:
+			if (mat == null) continue;
+
+			// Fade in the remaining materials:
+			Debug.Log("Material Fading In: " + mat.name);
+			if (mat.GetFloat(SizeID) > 0f)
+				mat.SetFloat(SizeID, mat.GetFloat(SizeID) - Time.deltaTime);
+			if (mat.GetFloat(TransparancyID) > 0f)
+				mat.SetFloat(TransparancyID, mat.GetFloat(TransparancyID) - Time.deltaTime);
 		}
 
-		Vector2 view = mainCamera.WorldToViewportPoint(transform.position);
-		leftWallMaterial.SetVector(PosID, view);
-	}
+		// Get the players position and convert it to screen space:
+		view = mainCamera.WorldToViewportPoint(transform.position);
 
-	private IEnumerator FadeOut(Material material)
-	{
-		float timeToLerp = lerpTime / (1 / material.GetFloat(SizeID));
-
-		while (material.GetFloat(SizeID) < 0.98f && material.GetFloat(TransparancyID) < 0.48f)
+		foreach (var mat in affectedMaterials)
 		{
-			material.SetFloat(SizeID, Mathf.Lerp(material.GetFloat(SizeID), 1f, timeToLerp));
-			material.SetFloat(TransparancyID, Mathf.Lerp(material.GetFloat(TransparancyID), 0.5f, timeToLerp / 2));
-			yield return null;
+			// Get the players position and convert it to screen space:
+			mat.SetVector(PosID, view);
 		}
-		material.SetFloat(SizeID, 1f);
-		material.SetFloat(TransparancyID, 0.5f);
-	}
-
-	private IEnumerator FadeIn(Material material)
-	{
-		float timeToLerp = lerpTime * material.GetFloat(SizeID);
-
-		while (material.GetFloat(SizeID) > 0.02f && material.GetFloat(TransparancyID) > 0.02f)
-		{
-			material.SetFloat(SizeID, Mathf.Lerp(material.GetFloat(SizeID), 0f, timeToLerp));
-			material.SetFloat(TransparancyID, Mathf.Lerp(material.GetFloat(TransparancyID), 0f, timeToLerp / 2));
-			yield return null;
-		}
-
-		material.SetFloat(SizeID, 0f);
-		material.SetFloat(TransparancyID, 0f);
 	}
 }
