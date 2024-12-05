@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1668550614465573166, guid: f76b0355cb33e1b489a7de4890072633, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: db8da163874ec3f45a9a73656db5189c, type: 2}
     - target: {fileID: 1744312703053418483, guid: f76b0355cb33e1b489a7de4890072633, type: 3}
       propertyPath: m_Name
       value: WallSegment1
